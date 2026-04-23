@@ -1,0 +1,17 @@
+{
+  "name": "flight-booking-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "database.hostname": "postgres",
+    "database.port": "5432",
+    "database.user": "postgres",
+    "database.password": "password",
+    "database.dbname": "flightbooking",
+    "database.server.name": "dbserver1",
+    "topic.prefix": "dbserver1",
+    "table.include.list": "public.FlightInstance",
+    "plugin.name": "pgoutput",
+    "slot.name": "debezium_flight_slot",
+    "publication.autocreate.mode": "filtered"
+  }
+}

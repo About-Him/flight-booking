@@ -1,0 +1,195 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  name         String
+  passwordHash String
+  role         Role      @default(USER)
+  airlineId    String?
+  airline      Airline?  @relation(fields: [airlineId], references: [id])
+  bookings     Booking[]
+  createdAt    DateTime  @default(now())
+
+  @@index([airlineId, role])
+}
+
+enum Role {
+  USER
+  ASSOCIATE
+  SENIOR_ASSOCIATE
+  SUPERADMIN
+}
+
+model Airline {
+  id        String   @id @default(uuid())
+  name      String
+  code      String   @unique
+  logoUrl   String?
+  flights   Flight[]
+  staff     User[]
+  createdAt DateTime @default(now())
+}
+
+model Flight {
+  id           String           @id @default(uuid())
+  airlineId    String
+  airline      Airline          @relation(fields: [airlineId], references: [id])
+  flightNumber String
+  origin       String
+  destination  String
+  durationMins Int
+  schedules    FlightSchedule[]
+  instances    FlightInstance[]
+  createdAt    DateTime         @default(now())
+
+  @@index([airlineId])
+  @@index([origin, destination])
+  @@index([airlineId, createdAt])
+}
+
+model FlightSchedule {
+  id            String           @id @default(uuid())
+  flightId      String
+  flight        Flight           @relation(fields: [flightId], references: [id])
+  departureTime String
+  scheduledDate DateTime
+  isDaily       Boolean          @default(false)
+  createdById   String?
+  createdAt     DateTime         @default(now())
+  instances     FlightInstance[]
+
+  @@index([flightId])
+}
+
+model FlightInstance {
+  id          String         @id @default(uuid())
+  instanceId  String         @unique
+  flightId    String
+  flight      Flight         @relation(fields: [flightId], references: [id])
+  scheduleId  String
+  schedule    FlightSchedule @relation(fields: [scheduleId], references: [id])
+  departureAt DateTime
+  arrivalAt   DateTime
+  status      FlightStatus   @default(SCHEDULED)
+  seats       Seat[]
+  bookings    Booking[]
+  createdAt   DateTime       @default(now())
+
+  @@index([flightId, departureAt])
+  @@index([departureAt, status])
+  @@index([status, departureAt])
+}
+
+enum FlightStatus {
+  SCHEDULED
+  BOARDING
+  DEPARTED
+  ARRIVED
+  CANCELLED
+}
+
+model Seat {
+  id           String         @id @default(uuid())
+  instanceId   String
+  instance     FlightInstance @relation(fields: [instanceId], references: [id])
+  seatNumber   String
+  class        SeatClass      @default(ECONOMY)
+  basePrice    Decimal
+  status       SeatStatus     @default(AVAILABLE)
+  bookingSeats BookingSeat[]
+
+  @@index([instanceId, status])
+  @@index([instanceId, class])
+}
+
+enum SeatClass {
+  ECONOMY
+  BUSINESS
+  FIRST
+}
+
+enum SeatStatus {
+  AVAILABLE
+  LOCKED
+  BOOKED
+}
+
+model Booking {
+  id                    String         @id @default(uuid())
+  userId                String
+  user                  User           @relation(fields: [userId], references: [id])
+  instanceId            String
+  instance              FlightInstance @relation(fields: [instanceId], references: [id])
+  totalAmount           Decimal
+  status                BookingStatus  @default(PENDING_PAYMENT)
+  stripePaymentIntentId String?
+  seats                 BookingSeat[]
+  checkIn               CheckIn?
+  createdAt             DateTime       @default(now())
+
+  @@unique([stripePaymentIntentId])
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([status, createdAt(sort: Desc)])
+}
+
+enum BookingStatus {
+  PENDING_PAYMENT
+  PENDING_VALIDATION
+  PENDING_APPROVAL
+  CONFIRMED
+  CHECKED_IN
+  REJECTED
+  CANCELLED
+  REFUNDED
+}
+
+model BookingSeat {
+  id            String    @id @default(uuid())
+  bookingId     String
+  booking       Booking   @relation(fields: [bookingId], references: [id])
+  seatId        String
+  seat          Seat      @relation(fields: [seatId], references: [id])
+  passengerName String
+  checkedIn     Boolean   @default(false)
+  checkedInAt   DateTime?
+
+  @@index([bookingId])
+  @@index([seatId])
+}
+
+model CheckIn {
+  id              String   @id @default(uuid())
+  bookingId       String   @unique
+  booking         Booking  @relation(fields: [bookingId], references: [id])
+  checkedInAt     DateTime @default(now())
+  boardingPassRef String
+}
+
+model Airport {
+  id          String @id @default(uuid())
+  iataCode    String @unique
+  name        String
+  city        String
+  country     String
+  countryCode String
+
+  @@index([iataCode])
+  @@index([city])
+  @@index([name])
+}
+
+model EmailLog {
+  id        String   @id @default(uuid())
+  toEmail   String
+  subject   String
+  status    String
+  bookingId String?
+  sentAt    DateTime @default(now())
+}

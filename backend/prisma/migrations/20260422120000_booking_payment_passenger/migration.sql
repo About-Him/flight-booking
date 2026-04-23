@@ -1,0 +1,8 @@
+-- AlterEnum
+ALTER TYPE "BookingStatus" ADD VALUE 'PENDING_PAYMENT' BEFORE 'PENDING_VALIDATION';
+
+-- AlterTable
+ALTER TABLE "BookingSeat" ADD COLUMN "passengerName" TEXT NOT NULL DEFAULT '';
+
+-- AlterTable
+ALTER TABLE "Booking" ALTER COLUMN "status" SET DEFAULT 'PENDING_PAYMENT';
