@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+  <defs>
+    <style>
+      .bg { fill: #07111f; }
+      .title { fill: #f4f7ff; font: 700 34px Arial, sans-serif; }
+      .subtitle { fill: #9fb0cb; font: 400 16px Arial, sans-serif; }
+      .layer { fill: #0f1b30; stroke: #2b4164; stroke-width: 2; rx: 24; }
+      .layerHead { fill: #f4f7ff; font: 700 22px Arial, sans-serif; }
+      .layerTag { fill: #7fe7d6; font: 700 13px Arial, sans-serif; letter-spacing: 1px; }
+      .card { fill: #13233d; stroke: #35527c; stroke-width: 1.4; rx: 18; }
+      .cardTitle { fill: #ffffff; font: 700 18px Arial, sans-serif; }
+      .cardBody { fill: #c6d2e6; font: 400 14px Arial, sans-serif; }
+      .cardMeta { fill: #8fb1ff; font: 700 12px Arial, sans-serif; }
+      .arrow { stroke: #8cb3ff; stroke-width: 4; fill: none; marker-end: url(#arrowHead); }
+      .dashed { stroke-dasharray: 10 8; }
+      .label { fill: #7fe7d6; font: 700 13px Arial, sans-serif; }
+      .small { fill: #9fb0cb; font: 400 13px Arial, sans-serif; }
+    </style>
+    <marker id="arrowHead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#8cb3ff"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="1200"/>
+
+  <text class="title" x="60" y="60">Flight Booking System - Layered High Level Design</text>
+  <!-- Layer 1 -->
+  <rect class="layer" x="60" y="130" width="1480" height="165"/>
+  <text class="layerTag" x="90" y="165">LAYER 1</text>
+  <text class="layerHead" x="90" y="196">Presentation Layer</text>
+  <text class="small" x="90" y="222">User-facing pages and client state management</text>
+
+  <rect class="card" x="90" y="240" width="270" height="44"/>
+  <text class="cardTitle" x="112" y="268">React SPA</text>
+  <text class="cardMeta" x="245" y="268">Vite + TypeScript</text>
+
+  <rect class="card" x="380" y="240" width="260" height="44"/>
+  <text class="cardTitle" x="402" y="268">TailwindCSS UI</text>
+  <text class="cardMeta" x="548" y="268">Responsive UI</text>
+
+  <rect class="card" x="660" y="240" width="265" height="44"/>
+  <text class="cardTitle" x="682" y="268">React Query</text>
+  <text class="cardMeta" x="800" y="268">Fetch/caching</text>
+
+  <rect class="card" x="945" y="240" width="265" height="44"/>
+  <text class="cardTitle" x="967" y="268">Pages</text>
+  <text class="cardMeta" x="1080" y="268">Search / checkout / admin</text>
+
+  <rect class="card" x="1230" y="240" width="290" height="44"/>
+  <text class="cardTitle" x="1252" y="268">Auth UI</text>
+  <text class="cardMeta" x="1330" y="268">JWT + role guards</text>
+
+  <path class="arrow" d="M800 295 L800 330"/>
+
+  <!-- Layer 2 -->
+  <rect class="layer" x="60" y="330" width="1480" height="245"/>
+  <text class="layerTag" x="90" y="365">LAYER 2</text>
+  <text class="layerHead" x="90" y="396">Application / API Layer</text>
+  <text class="small" x="90" y="422">NestJS modules orchestrate requests, validation, booking rules, payments, and workflows</text>
+
+  <rect class="card" x="90" y="440" width="210" height="102"/>
+  <text class="cardTitle" x="112" y="468">NestJS API</text>
+  <text class="cardBody" x="112" y="495">Controllers, services, validation, Swagger</text>
+
+  <rect class="card" x="320" y="440" width="230" height="102"/>
+  <text class="cardTitle" x="342" y="468">Auth</text>
+  <text class="cardBody" x="342" y="495">Passport JWT, RBAC, role guards</text>
+
+  <rect class="card" x="570" y="440" width="230" height="102"/>
+  <text class="cardTitle" x="592" y="468">Flights</text>
+  <text class="cardBody" x="592" y="495">Search, templates, schedules, instances</text>
+
+  <rect class="card" x="820" y="440" width="230" height="102"/>
+  <text class="cardTitle" x="842" y="468">Bookings</text>
+  <text class="cardBody" x="842" y="495">Seat locks, booking states, approval flow</text>
+
+  <rect class="card" x="1070" y="440" width="180" height="102"/>
+  <text class="cardTitle" x="1092" y="468">Payments</text>
+  <text class="cardBody" x="1092" y="495">Stripe intents, confirmations, refunds</text>
+
+  <rect class="card" x="1270" y="440" width="250" height="102"/>
+  <text class="cardTitle" x="1292" y="468">Admin / Check-in</text>
+  <text class="cardBody" x="1292" y="495">Airline ops, supervision, web check-in</text>
+
+  <path class="arrow" d="M800 575 L800 610"/>
+
+  <!-- Layer 3 -->
+  <rect class="layer" x="60" y="610" width="1480" height="175"/>
+  <text class="layerTag" x="90" y="645">LAYER 3</text>
+  <text class="layerHead" x="90" y="676">Async / Eventing Layer</text>
+  <text class="small" x="90" y="702">Used for search sync, mail delivery, and decoupled background work</text>
+
+  <rect class="card" x="90" y="720" width="250" height="48"/>
+  <text class="cardTitle" x="112" y="749">Kafka Producer</text>
+  <text class="cardMeta" x="112" y="769">booking events</text>
+
+  <rect class="card" x="370" y="720" width="250" height="48"/>
+  <text class="cardTitle" x="392" y="749">Kafka Consumer</text>
+  <text class="cardMeta" x="392" y="769">mail queue</text>
+
+  <rect class="card" x="650" y="720" width="250" height="48"/>
+  <text class="cardTitle" x="672" y="749">Debezium CDC</text>
+  <text class="cardMeta" x="672" y="769">reads WAL</text>
+
+  <rect class="card" x="930" y="720" width="250" height="48"/>
+  <text class="cardTitle" x="952" y="749">CDC Consumer</text>
+  <text class="cardMeta" x="952" y="769">syncs index</text>
+
+  <rect class="card" x="1210" y="720" width="330" height="48"/>
+  <text class="cardTitle" x="1232" y="749">SendGrid</text>
+  <text class="cardMeta" x="1232" y="769">booking emails</text>
+
+  <path class="arrow dashed" d="M1080 720 C1080 690, 1010 675, 960 655"/>
+  <text class="label" x="1010" y="668">async email flow</text>
+
+  <path class="arrow dashed" d="M840 720 C840 680, 880 662, 930 655"/>
+  <text class="label" x="845" y="668">CDC sync</text>
+
+  <!-- Layer 4 -->
+  <rect class="layer" x="60" y="810" width="1480" height="215"/>
+  <text class="layerTag" x="90" y="845">LAYER 4</text>
+  <text class="layerHead" x="90" y="876">Data / Search Layer</text>
+  <text class="small" x="90" y="902">PostgreSQL is the source of truth; Elasticsearch is the search read model</text>
+
+  <rect class="card" x="90" y="920" width="280" height="76"/>
+  <text class="cardTitle" x="112" y="948">PostgreSQL 16</text>
+  <text class="cardBody" x="112" y="974">Users, airlines, flights, seats, bookings</text>
+
+  <rect class="card" x="390" y="920" width="220" height="76"/>
+  <text class="cardTitle" x="412" y="948">PgBouncer</text>
+  <text class="cardBody" x="412" y="974">Read pool and write pool</text>
+
+  <rect class="card" x="630" y="920" width="240" height="76"/>
+  <text class="cardTitle" x="652" y="948">Prisma ORM</text>
+  <text class="cardBody" x="652" y="974">Database access from NestJS</text>
+
+  <rect class="card" x="890" y="920" width="240" height="76"/>
+  <text class="cardTitle" x="912" y="948">Elasticsearch 8</text>
+  <text class="cardBody" x="912" y="974">Flight search index</text>
+
+  <rect class="card" x="1150" y="920" width="180" height="76"/>
+  <text class="cardTitle" x="1172" y="948">Redis</text>
+  <text class="cardBody" x="1172" y="974">Seat locks</text>
+
+  <rect class="card" x="1350" y="920" width="190" height="76"/>
+  <text class="cardTitle" x="1372" y="948">Airport list</text>
+  <text class="cardBody" x="1372" y="974">Backend list endpoint</text>
+
+  <!-- Infra strip -->
+  <rect class="layer" x="60" y="1050" width="1480" height="100"/>
+  <text class="layerTag" x="90" y="1084">LAYER 5</text>
+  <text class="layerHead" x="90" y="1110">Local Infrastructure / Dev Stack</text>
+
+  <text class="cardBody" x="450" y="1110">Docker Compose · PostgreSQL · Redis · Kafka · Zookeeper · Debezium Connect · Elasticsearch · Stripe · SendGrid</text>
+
+  <path class="arrow" d="M800 1030 L800 1050"/>
+
+</svg>

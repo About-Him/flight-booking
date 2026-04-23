@@ -2,6 +2,14 @@
 
 Full-stack flight booking demo: passengers search flights, pick seats, and pay with Stripe; airline staff manage schedules and bookings; superadmins manage airlines. The backend is a NestJS API with Prisma on PostgreSQL (read/write pools via PgBouncer), Redis, Kafka, Debezium Connect (for CDC), and Elasticsearch for search.
 
+## High-level design
+
+Layered architecture overview (presentation, application, data, and integrations):
+
+![Layered high-level design](HLD-layered.svg)
+
+Source files: [HLD-layered.svg](HLD-layered.svg) (vector) · [HLD-layered.png](HLD-layered.png).
+
 ## Stack
 
 | Area | Technology |
@@ -97,6 +105,8 @@ After `prisma migrate reset` or any operation that wipes or replaces flight/inst
 ├── backend/              NestJS app (source in backend/src), Prisma schema & migrations
 ├── frontend/             Vite + React SPA (source in frontend/src)
 ├── scripts/              Debezium helper (register connector)
+├── HLD-layered.svg       Layered architecture diagram (see High-level design)
+├── HLD-layered.png       Raster export of the same diagram
 ├── docker-compose.yml
 ├── .env.example          Reference for backend + frontend env vars
 └── README.md
